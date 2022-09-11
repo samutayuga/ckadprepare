@@ -152,22 +152,90 @@ kubectl create -f pod_def_file.yaml
                --from-literal=sour=soursop
   ```
 
-  > this will be more complicated when there is a lot of configuration item, so that there is other option supported `--from-file` which accepts the file path of a configuration file
+  > this will be more complicated when there is a lot of configuration item, 
+  so that there is other option supported `--from-file` which accepts the file path of a configuration file
 
   ```bash
   kubectl create configmap \
   fruit-config --from-file=fruit.properties
   ```
+> Another option is when you have several files in a directory, the config map can be created by feeding the command with
+the directory path.
+
+```
+config
+  engine.conf
+  api.conf
+```
+
+The config map can be created by,
+
+```
+kubectl create configmap app-config --from-file=config
+```
+
+
+
 
 ## Inject into the POD
 
 # Secrets
 
 # ServiceAccount
+We've been using the `kubectl` executable to run operations againts a Kubernetes cluster. Under the hood, its implementation calls the API server by making an HTTP call to the exposed endpoints. Some applications running inside of a Pod may have to communicate with the API server as well.
+For example, the application may ask for specific cluster node information or available namespaces.
+
+Pods use a Service Account to authenticate with the API server through an authentication token. A kubernetes administrator assigns rules to a Service Account via role-basedd access control (RBAC) to authorize access to specific resources and actions.
 
 # SecurityContext
 
 # Resource Limit
+
+
+`Resource Boundaries` 
+Namespaces do not enforce any quotas for computing resources like CPU, memmory or disk space, nor do they limit the number of Kubernetes object that can be created. As a result, Kubernetes objects can consume unlimited resources until the maximum available capacity is reached.
+ 
+`ResourceQuota`
+
+Kubernetes primitive that establishes the usable, maximum amount of resources per namespace.
+Once put in place, the kubernetes scheduler will take care to enforce those rules.
+
+>Kubernetes measures CPU resources in millicores and memory resources in bytes. Eg, `600m` or `100Mib`
+
+Typical rule enforced by the `ResourceQuoate`
+
+* Setting an upper limit for the number of objects that can be created for a specific type (e.g. , a maximum of 3 Pods)
+
+* Limiting the total sum of compute resources (e.g. 3 GiB of RAM)
+* Expecting a Quality of Service (QoS) class for Pod (e.g., BestEffort to indicate that the Pod must not make any memory or CPU memory limits or requests)
+
+For example, below is the resource limit requirement manifest given for a ckad namespace
+
+```yaml
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: ckad-quota
+  namespace: ckad
+spec:
+  hard:
+    pods: 2
+    requests.cpu: "1"
+    requests.memory: 1024m
+    limits.cpu: "4"
+    limits.memory: 4096m
+```
+
+
+
+
+
+
+
+
+
+
+
 
 # Taint and Toleration
 
