@@ -1,0 +1,14 @@
+truncate ota_campaign_targets_pod_execution;
+truncate ota_campaign_info_map ;
+truncate ota_campaign_targets;
+truncate cbfs_block;
+truncate ota_campaign_criteria_file_name;
+truncate ota_bfs_block_cursor;
+truncate ota_campaign_statistics_basic;
+truncate cbfs_file;
+truncate cbfs_file_by_name;
+truncate ota_campaign_campaign_name;
+truncate ota_campaign_campaign;
+truncate ota_campaign_scenario_name;
+truncate ota_campaign_scenario;
+truncate ota_campaign_targets_history;
